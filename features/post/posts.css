@@ -64,6 +64,14 @@ article{
     font-size: 15px;
     font-weight: 400;
 }
+.post-form select{
+    width: 100%;
+    margin: 5px 0;
+    padding: 10px 30px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 400;
+}
 
 button {
     border-radius: 8px;
@@ -80,4 +88,9 @@ button {
   }
   button:hover {
     border-color: #646cff;
+  }
+  .post-credit{
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
