@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewPost } from "./postSlice";
 import { selectAllUsers } from "../users/usersSlice";
 import { useNavigate } from "react-router-dom";
+import '../post/posts.css'
 
 
 const AddPostForm = () => {

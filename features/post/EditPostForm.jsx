@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePost, selectPostById, updatePost } from "./postSlice";
 import { useParams, useNavigate } from "react-router-dom";
 import { selectAllUsers } from "../users/usersSlice";
-
+import '../post/posts.css'
 
 const EditPostForm = () => {
     const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const EditPostForm = () => {
 
     const onTitleChanged = e => setTitle(e.target.value);
     const onContentChanged = e => setContent(e.target.value);
-    const onAuthorChanged = e => setUserId(e.target.value);
+    const onAuthorChanged = e => setUserId(Number(e.target.value));
 
     const canSave = [title, content, userId].every(Boolean) && requestStatus === 'idle';
 
