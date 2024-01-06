@@ -14,7 +14,6 @@ const PostList = () => {
       if(postStatus === 'idle'){
         dispatch(fetchPost());
       }
-      console.log(posts);
     }, [postStatus, dispatch])
     
 
@@ -31,7 +30,6 @@ const PostList = () => {
 
   return (
     <section className="posts-con">
-        <h1 className="heading">Posts</h1>
         {content}
     </section>
   )
