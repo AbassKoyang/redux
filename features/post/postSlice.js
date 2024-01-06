@@ -6,16 +6,18 @@ import axios from 'axios';
 const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 const initialState = {
-    posts: [],
+    posts: [
+    ],
     status: 'idle',
     error: null,
 }
 
-export const fethcPost = createAsyncThunk('posts/fetchPosts', async ()=> {
+export const fetchPost = createAsyncThunk('posts/fetchPost', async () => {
     try {
         const response = await axios.get(POSTS_URL);
         return response.data;
     } catch (error) {
+        console.log(error)
         return error.message;
     }
 })
@@ -54,9 +56,38 @@ const postsSlice = createSlice({
                 existingPost.reactions[reaction]++
             }
         }
+    },
+    extraReducers(builder) {
+        builder.addCase(fetchPost.pending, (state, action) => {
+            state.status = 'loading'
+        })
+        .addCase(fetchPost.fulfilled, (state, action) => {
+            state.status = 'succeeded';
+            //Adding date and reactions
+            let min = 1;
+            const loadedPost = action.payload.map(post => {
+                post.date = sub(new Date(), {minutes: min++}).toISOString();
+                post.reactions = {
+                    thumbsUp: 0,
+                    wow: 0,
+                    heart: 0,
+                    rocket: 0,
+                    coffee: 0,
+                }
+                return post;
+            })
+            //Add fetched post to array
+            state.posts = loadedPost;
+        })
+        .addCase(fetchPost.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message;
+        })
     }
 })
 
 export const {postAdded, reactionAdded} = postsSlice.actions;
 export const selectAllPosts = (state) => state.posts.posts;
+export const getPostStatus = (state) => state.posts.status;
+export const getPostError = (state) => state.posts.error;
 export default postsSlice.reducer;
