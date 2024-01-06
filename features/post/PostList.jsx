@@ -19,7 +19,7 @@ const PostList = () => {
     
 
     let content;
-    if(postStatus === 'pending') {
+    if(postStatus === 'loading') {
         content = <p>Loading...</p>;
     } else if(postStatus === 'succeeded'){
         const orderedPost = posts.slice().sort((a,b) => b.date.localeCompare(a.date));

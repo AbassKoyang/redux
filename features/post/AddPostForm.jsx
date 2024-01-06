@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postAdded } from "./postSlice";
+import { addNewPost } from "./postSlice";
 import { selectAllUsers } from "../users/usersSlice";
 
 
@@ -10,15 +10,28 @@ const AddPostForm = () => {
     const [content, setContent] = useState('');
     const [userId, setUserId] = useState('');
     const users = useSelector(selectAllUsers);
+    const [addRequestStatus, setAddRequestStatus] = useState('idle');
 
     const onTitleChanged = e => setTitle(e.target.value);
     const onContentChanged = e => setContent(e.target.value);
     const onAuthorChanged = e => setUserId(e.target.value);
+
+    const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle';
+
     const onSavePostClicked = () => {
-        if (title && content) {
-            dispatch(postAdded(title, content, userId))
-            setTitle('')
-            setContent('')
+        if (canSave) {
+            try {
+                setAddRequestStatus('pending');
+                dispatch(addNewPost({title, body: content, userId})).unwrap();
+            
+                setTitle('');
+                setContent('');
+                setUserId('');
+            } catch (error) {
+                console.error('Failed to save post:', error)
+            }finally{
+                setAddRequestStatus('idle');
+            }
         }
     }
     
@@ -29,8 +42,6 @@ const AddPostForm = () => {
             </option>
         )
     })
-
-    const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
     return (
         <section className="add-post-con">
             <h2>Add new post</h2>
