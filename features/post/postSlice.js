@@ -11,7 +11,6 @@ const postsAdapter = createEntityAdapter({
 const initialState = postsAdapter.getInitialState({
     status: 'idle',
     error: null,
-    count: 0,
 })
 
 export const fetchPost = createAsyncThunk('posts/fetchPost', async () => {
@@ -70,9 +69,6 @@ const postsSlice = createSlice({
                 existingPost.reactions[reaction]++
             }
         },
-        increaseCount(state, action){
-            state.count = state.count + 1;
-        }
     },
     extraReducers(builder) {
         builder.addCase(fetchPost.pending, (state, action) => {
